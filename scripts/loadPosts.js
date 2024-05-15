@@ -33,8 +33,125 @@ export const loadPosts = () => {
 
       const excluirButton = document.createElement("button");
       excluirButton.innerText = "Excluir";
-      excluirButton.className = "btn btn-danger";  
-      excluirButton.addEventListener("click", () => {
+      excluirButton.className = "btn btn-danger";
+      excluirButton.setAttribute("data-bs-toggle", "modal");
+      excluirButton.setAttribute("data-bs-target", `#excludeModal-${post.id}`);
+
+      buttonsDiv.append(editButton, excluirButton);
+
+      const editModalDiv = document.createElement("div");
+      editModalDiv.className = "modal";
+      editModalDiv.id = `editModal-${post.id}`;
+      editModalDiv.setAttribute("tabindex", "-1");
+      editModalDiv.setAttribute("aria-labelledby", "editModalLabel");
+      editModalDiv.setAttribute("aria-hidden", "true");
+
+      const editModalDialog = document.createElement("div");
+      editModalDialog.className = "modal-dialog";
+
+      const editModalContent = document.createElement("div");
+      editModalContent.className = "modal-content";
+
+      const editModalHeader = document.createElement("div");
+      editModalHeader.className = "modal-header";
+
+      const editModalTitle = document.createElement("h5");
+      editModalTitle.className = "modal-title";
+      editModalTitle.innerText = "Editar Post";
+
+      const editModalCloseButton = document.createElement("button");
+      editModalCloseButton.type = "button";
+      editModalCloseButton.className = "btn-close";
+      editModalCloseButton.setAttribute("data-bs-dismiss", "modal");
+      editModalCloseButton.setAttribute("aria-label", "Close");
+      
+      editModalHeader.append(editModalTitle, editModalCloseButton);
+
+      const editModalBody = document.createElement("div");
+      editModalBody.className = "modal-body";
+
+      const editModalBodyDiv = document.createElement("div");
+      editModalBodyDiv.className = "editInputDiv";
+
+      const editModalBodyLabel = document.createElement("label");
+      editModalBodyLabel.className = "form-label";
+      editModalBodyLabel.innerText = "Texto do Post";
+
+      const editModalBodyInput = document.createElement("input");
+      editModalBodyInput.type = "text";
+      editModalBodyInput.className = "form-control";
+
+      editModalBodyDiv.append(editModalBodyLabel, editModalBodyInput);
+
+      editModalBody.append(editModalBodyDiv);
+
+      const editModalFooter = document.createElement("div");
+      editModalFooter.className = "modal-footer";
+
+      const editModalFooterButton = document.createElement("button");
+      editModalFooterButton.type = "button";
+      editModalFooterButton.className = "btn btn-primary";
+      editModalFooterButton.setAttribute("data-bs-dismiss", "modal");
+      editModalFooterButton.innerText = "Salvar";
+      editModalFooterButton.addEventListener("click", () => {
+        if (editModalBodyInput.value != "") {
+          editPost(post.id, {...post, text: editModalBodyInput.value, carregado: true});
+          document.getElementById(`postText-${post.id}`).innerText = editModalBodyInput.value;
+          editModalBodyInput.value = "";
+        }
+      });
+
+      editModalFooter.append(editModalFooterButton);
+
+      editModalContent.append(editModalHeader, editModalBody, editModalFooter);
+
+      editModalDialog.append(editModalContent);
+
+      editModalDiv.append(editModalDialog);
+
+      ////////////////////
+
+      const excludeModalDiv = document.createElement("div");
+      excludeModalDiv.className = "modal";
+      excludeModalDiv.id = `excludeModal-${post.id}`;
+      excludeModalDiv.setAttribute("tabindex", "-1");
+      excludeModalDiv.setAttribute("aria-labelledby", "excludeModalLabel");
+      excludeModalDiv.setAttribute("aria-hidden", "true");
+
+      const excludeModalDialog = document.createElement("div");
+      excludeModalDialog.className = "modal-dialog";
+
+      const excludeModalContent = document.createElement("div");
+      excludeModalContent.className = "modal-content";
+
+      const excludeModalHeader = document.createElement("div");
+      excludeModalHeader.className = "modal-header";
+
+      const excludeModalTitle = document.createElement("h5");
+      excludeModalTitle.className = "modal-title";
+      excludeModalTitle.innerText = "Excluir Post";
+
+      const excludeModalCloseButton = document.createElement("button");
+      excludeModalCloseButton.type = "button";
+      excludeModalCloseButton.className = "btn-close";
+      excludeModalCloseButton.setAttribute("data-bs-dismiss", "modal");
+      excludeModalCloseButton.setAttribute("aria-label", "Close");
+      
+      excludeModalHeader.append(excludeModalTitle, excludeModalCloseButton);
+
+      const excludeModalBody = document.createElement("div");
+      excludeModalBody.className = "modal-body";
+      excludeModalBody.innerText = "Deseja realmente excluir este post?";
+
+      const excludeModalFooter = document.createElement("div");
+      excludeModalFooter.className = "modal-footer";
+
+      const excludeModalFooterButton = document.createElement("button");
+      excludeModalFooterButton.type = "button";
+      excludeModalFooterButton.className = "btn btn-danger";
+      excludeModalFooterButton.setAttribute("data-bs-dismiss", "modal");
+      excludeModalFooterButton.innerText = "Sim, excluir";
+      excludeModalFooterButton.addEventListener("click", () => {
         div.remove();
         deletePost(post.id);
         if(fakeDb.posts.length == 0) {
@@ -42,80 +159,22 @@ export const loadPosts = () => {
         } 
       });
 
-      buttonsDiv.append(editButton, excluirButton);
+      const excludeModalFooterButtonCancel = document.createElement("button");
+      excludeModalFooterButtonCancel.type = "button";
+      excludeModalFooterButtonCancel.className = "btn btn-secondary";
+      excludeModalFooterButtonCancel.setAttribute("data-bs-dismiss", "modal");
+      excludeModalFooterButtonCancel.innerText = "Cancelar";
 
-      const modalDiv = document.createElement("div");
-      modalDiv.className = "modal";
-      modalDiv.id = `editModal-${post.id}`;
-      modalDiv.setAttribute("tabindex", "-1");
-      modalDiv.setAttribute("aria-labelledby", "editModalLabel");
-      modalDiv.setAttribute("aria-hidden", "true");
+      excludeModalFooter.append(excludeModalFooterButtonCancel, excludeModalFooterButton);
 
-      const modalDialog = document.createElement("div");
-      modalDialog.className = "modal-dialog";
+      excludeModalContent.append(excludeModalHeader, excludeModalBody, excludeModalFooter);
 
-      const modalContent = document.createElement("div");
-      modalContent.className = "modal-content";
+      excludeModalDialog.append(excludeModalContent);
 
-      const modalHeader = document.createElement("div");
-      modalHeader.className = "modal-header";
-
-      const modalTitle = document.createElement("h5");
-      modalTitle.className = "modal-title";
-      modalTitle.innerText = "Editar Post";
-
-      const modalCloseButton = document.createElement("button");
-      modalCloseButton.type = "button";
-      modalCloseButton.className = "btn-close";
-      modalCloseButton.setAttribute("data-bs-dismiss", "modal");
-      modalCloseButton.setAttribute("aria-label", "Close");
-
-      modalHeader.append(modalTitle, modalCloseButton);
-
-      const modalBody = document.createElement("div");
-      modalBody.className = "modal-body";
-
-      const modalBodyDiv = document.createElement("div");
-      modalBodyDiv.className = "editInputDiv";
-
-      const modalBodyLabel = document.createElement("label");
-      modalBodyLabel.className = "form-label";
-      modalBodyLabel.innerText = "Texto do Post";
-
-      const modalBodyInput = document.createElement("input");
-      modalBodyInput.type = "text";
-      modalBodyInput.className = "form-control";
-
-      modalBodyDiv.append(modalBodyLabel, modalBodyInput);
-
-      modalBody.append(modalBodyDiv);
-
-      const modalFooter = document.createElement("div");
-      modalFooter.className = "modal-footer";
-
-      const modalFooterButton = document.createElement("button");
-      modalFooterButton.type = "button";
-      modalFooterButton.className = "btn btn-primary";
-      modalFooterButton.setAttribute("data-bs-dismiss", "modal");
-      modalFooterButton.innerText = "Salvar";
-      modalFooterButton.addEventListener("click", () => {
-        if (modalBodyInput.value != "") {
-          editPost(post.id, {...post, text: modalBodyInput.value, carregado: true});
-          document.getElementById(`postText-${post.id}`).innerText = modalBodyInput.value;
-          modalBodyInput.value = "";
-        }
-      });
-
-      modalFooter.append(modalFooterButton);
-
-      modalContent.append(modalHeader, modalBody, modalFooter);
-
-      modalDialog.append(modalContent);
-
-      modalDiv.append(modalDialog);
+      excludeModalDiv.append(excludeModalDialog);
 
       if (post.imgsList.length == 0) {
-        div.append(postText, categoryText, time, buttonsDiv, modalDiv);
+        div.append(postText, categoryText, time, buttonsDiv, editModalDiv, excludeModalDiv);
       } else {
         const imagesCarrouselDiv = document.createElement("div");
         imagesCarrouselDiv.className = "carousel slide carouselContainer";
@@ -180,7 +239,7 @@ export const loadPosts = () => {
           imagesCarrouselDiv.append(carouselInner);
         }
 
-        div.append(postText, imagesCarrouselDiv, categoryText, time, buttonsDiv, modalDiv);
+        div.append(postText, imagesCarrouselDiv, categoryText, time, buttonsDiv, editModalDiv, excludeModalDiv);
       }
 
       
