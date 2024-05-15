@@ -132,6 +132,19 @@ form{
         }
     }
 }
+#filtroDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    gap: 0.5rem;
+
+    & label{
+        font-weight: 600;
+        color: var(--accent-color);
+    }
+}
 
 footer{
     background-color: var(--topDown-color);

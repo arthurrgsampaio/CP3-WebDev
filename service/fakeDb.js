@@ -1,3 +1,5 @@
-export let fakeDb = {
+export const postsDb = {
   posts: []
-}
+};
+
+export const filterDb = ["Todos"];

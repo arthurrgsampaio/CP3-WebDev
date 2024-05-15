@@ -1,13 +1,32 @@
-import { fakeDb } from "../service/fakeDb.js";
+import { postsDb, filterDb } from "../service/fakeDb.js";
 import { editPost } from "./editPost.js";
 import { deletePost } from "./deletePost.js";
 
 export const loadPosts = () => {
+  // Exibe a div de posts
   const posts = document.getElementById("posts");
   posts.style.display = "flex";
 
-  fakeDb.posts.forEach((post) => {
+  // Coloca na tela os posts que ainda não foram carregados
+  postsDb.posts.forEach((post) => {
     if (!post.carregado) {
+      const filtroDiv = document.getElementById("filtroDiv");
+
+      const filtro = document.getElementById("filtro");
+
+      if (!filterDb.includes(post.categoria)) {
+        const option = document.createElement("option");
+        option.value = post.categoria;
+        option.text = post.categoria;
+
+        filterDb.push(post.categoria);
+
+        filtro.appendChild(option);
+      }
+
+      filtroDiv.appendChild(filtro);
+
+      // Cria o post
       const div = document.createElement("div");
       div.className = "postContainer";
 
@@ -18,10 +37,10 @@ export const loadPosts = () => {
       const categoryText = document.createElement("p");
       categoryText.innerText = `Categoria: ${post.categoria}`;
 
-      const data = new Date();
       const time = document.createElement("p");
-      time.innerText = `Data e Hora: ${data.toLocaleString("pt-BR")}`;
+      time.innerText = `Data e Hora: ${post.data}`;
 
+      // Cria os botões dos modais de edição e deleção
       const buttonsDiv = document.createElement("div");
       buttonsDiv.className = "buttonsDiv";
 
@@ -39,6 +58,7 @@ export const loadPosts = () => {
 
       buttonsDiv.append(editButton, excluirButton);
 
+      //Modal de edição do post
       const editModalDiv = document.createElement("div");
       editModalDiv.className = "modal";
       editModalDiv.id = `editModal-${post.id}`;
@@ -64,7 +84,7 @@ export const loadPosts = () => {
       editModalCloseButton.className = "btn-close";
       editModalCloseButton.setAttribute("data-bs-dismiss", "modal");
       editModalCloseButton.setAttribute("aria-label", "Close");
-      
+
       editModalHeader.append(editModalTitle, editModalCloseButton);
 
       const editModalBody = document.createElement("div");
@@ -93,24 +113,26 @@ export const loadPosts = () => {
       editModalFooterButton.className = "btn btn-primary";
       editModalFooterButton.setAttribute("data-bs-dismiss", "modal");
       editModalFooterButton.innerText = "Salvar";
+      // Realiza a edição do texto do post
       editModalFooterButton.addEventListener("click", () => {
         if (editModalBodyInput.value != "") {
-          editPost(post.id, {...post, text: editModalBodyInput.value, carregado: true});
-          document.getElementById(`postText-${post.id}`).innerText = editModalBodyInput.value;
+          editPost(post.id, {
+            ...post,
+            text: editModalBodyInput.value,
+            carregado: true,
+          });
+          document.getElementById(`postText-${post.id}`).innerText =
+            editModalBodyInput.value;
           editModalBodyInput.value = "";
         }
       });
 
       editModalFooter.append(editModalFooterButton);
-
       editModalContent.append(editModalHeader, editModalBody, editModalFooter);
-
       editModalDialog.append(editModalContent);
-
       editModalDiv.append(editModalDialog);
 
-      ////////////////////
-
+      //Modal de exclusão do post
       const excludeModalDiv = document.createElement("div");
       excludeModalDiv.className = "modal";
       excludeModalDiv.id = `excludeModal-${post.id}`;
@@ -136,7 +158,7 @@ export const loadPosts = () => {
       excludeModalCloseButton.className = "btn-close";
       excludeModalCloseButton.setAttribute("data-bs-dismiss", "modal");
       excludeModalCloseButton.setAttribute("aria-label", "Close");
-      
+
       excludeModalHeader.append(excludeModalTitle, excludeModalCloseButton);
 
       const excludeModalBody = document.createElement("div");
@@ -151,12 +173,13 @@ export const loadPosts = () => {
       excludeModalFooterButton.className = "btn btn-danger";
       excludeModalFooterButton.setAttribute("data-bs-dismiss", "modal");
       excludeModalFooterButton.innerText = "Sim, excluir";
+      // Realiza a exclusão do post
       excludeModalFooterButton.addEventListener("click", () => {
         div.remove();
         deletePost(post.id);
-        if(fakeDb.posts.length == 0) {
+        if (postsDb.posts.length == 0) {
           posts.style.display = "none";
-        } 
+        }
       });
 
       const excludeModalFooterButtonCancel = document.createElement("button");
@@ -165,17 +188,30 @@ export const loadPosts = () => {
       excludeModalFooterButtonCancel.setAttribute("data-bs-dismiss", "modal");
       excludeModalFooterButtonCancel.innerText = "Cancelar";
 
-      excludeModalFooter.append(excludeModalFooterButtonCancel, excludeModalFooterButton);
-
-      excludeModalContent.append(excludeModalHeader, excludeModalBody, excludeModalFooter);
-
+      excludeModalFooter.append(
+        excludeModalFooterButtonCancel,
+        excludeModalFooterButton
+      );
+      excludeModalContent.append(
+        excludeModalHeader,
+        excludeModalBody,
+        excludeModalFooter
+      );
       excludeModalDialog.append(excludeModalContent);
-
       excludeModalDiv.append(excludeModalDialog);
 
+      // Verifica se o post possui imagens
       if (post.imgsList.length == 0) {
-        div.append(postText, categoryText, time, buttonsDiv, editModalDiv, excludeModalDiv);
+        div.append(
+          postText,
+          categoryText,
+          time,
+          buttonsDiv,
+          editModalDiv,
+          excludeModalDiv
+        );
       } else {
+        // Cria o carrossel de imagens
         const imagesCarrouselDiv = document.createElement("div");
         imagesCarrouselDiv.className = "carousel slide carouselContainer";
         imagesCarrouselDiv.id = `carouselDiv-${post.id}`;
@@ -194,6 +230,7 @@ export const loadPosts = () => {
         carouselItemActive.appendChild(imageActive);
         carouselInner.appendChild(carouselItemActive);
 
+        // Garante a criação de carrouseis condizenteds com a quantidade de imagens
         if (post.imgsList.length > 1) {
           for (let i = 1; i < post.imgsList.length; i++) {
             const carouselItemIf = document.createElement("div");
@@ -209,7 +246,10 @@ export const loadPosts = () => {
           const buttonLeftDiv = document.createElement("button");
           buttonLeftDiv.className = "carousel-control-prev";
           buttonLeftDiv.type = "button";
-          buttonLeftDiv.setAttribute("data-bs-target", `#carouselDiv-${post.id}`);
+          buttonLeftDiv.setAttribute(
+            "data-bs-target",
+            `#carouselDiv-${post.id}`
+          );
           buttonLeftDiv.setAttribute("data-bs-slide", "prev");
 
           const buttonLeft = document.createElement("span");
@@ -221,7 +261,10 @@ export const loadPosts = () => {
           const buttonRightDiv = document.createElement("button");
           buttonRightDiv.className = "carousel-control-next";
           buttonRightDiv.type = "button";
-          buttonRightDiv.setAttribute("data-bs-target", `#carouselDiv-${post.id}`);
+          buttonRightDiv.setAttribute(
+            "data-bs-target",
+            `#carouselDiv-${post.id}`
+          );
           buttonRightDiv.setAttribute("data-bs-slide", "next");
 
           const buttonRight = document.createElement("span");
@@ -229,7 +272,6 @@ export const loadPosts = () => {
           buttonRight.setAttribute("aria-hidden", "true");
 
           buttonRightDiv.appendChild(buttonRight);
-
           imagesCarrouselDiv.append(
             carouselInner,
             buttonLeftDiv,
@@ -239,13 +281,23 @@ export const loadPosts = () => {
           imagesCarrouselDiv.append(carouselInner);
         }
 
-        div.append(postText, imagesCarrouselDiv, categoryText, time, buttonsDiv, editModalDiv, excludeModalDiv);
+        // Adiciona os elementos à div
+        div.append(
+          postText,
+          imagesCarrouselDiv,
+          categoryText,
+          time,
+          buttonsDiv,
+          editModalDiv,
+          excludeModalDiv
+        );
       }
 
-      
+      // Adiciona a div ao container de posts
       posts.appendChild(div);
-    
-      editPost(post.id, {...post, carregado: true})
+
+      // Marca o post como carregado
+      editPost(post.id, { ...post, carregado: true });
     }
   });
 };
