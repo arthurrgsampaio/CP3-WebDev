@@ -14,12 +14,12 @@ export const loadPosts = () => {
 
       const filtro = document.getElementById("filtro");
 
-      if (!filterDb.includes(post.categoria)) {
+      if (!filterDb.filter.includes(post.categoria)) {
         const option = document.createElement("option");
         option.value = post.categoria;
         option.text = post.categoria;
 
-        filterDb.push(post.categoria);
+        filterDb.filter.push(post.categoria);
 
         filtro.appendChild(option);
       }
