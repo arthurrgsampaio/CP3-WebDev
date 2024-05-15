@@ -2,4 +2,6 @@ export const postsDb = {
   posts: []
 };
 
-export const filterDb = ["Todos"];
+export const filterDb = {
+  filter: ["Todos"]
+};
