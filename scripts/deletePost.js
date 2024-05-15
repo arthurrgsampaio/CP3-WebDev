@@ -1,7 +1,7 @@
-import { fakeDb } from "../service/fakeDb.js";
+import { postsDb } from "../service/fakeDb.js";
 
 export const deletePost = (id) => {
-  const newDb = fakeDb.posts.filter((post) => post.id !== id);
+  const newDb = postsDb.posts.filter((post) => post.id !== id);
 
-  fakeDb.posts = newDb;
+  postsDb.posts = newDb;
 }; 

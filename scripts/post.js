@@ -1,4 +1,4 @@
-import { fakeDb } from "../service/fakeDb.js";
+import { postsDb } from "../service/fakeDb.js";
 
 export const post = () => {
   let text = document.getElementById("post").value;
@@ -8,6 +8,7 @@ export const post = () => {
   let img3 = document.getElementById("img3").value;
   let imgsList = [];
   let id = Math.random().toString(16).slice(2);
+  let data = new Date().toLocaleString("pt-BR");
 
   if (img1 != "") {
     imgsList.push(img1);
@@ -23,11 +24,12 @@ export const post = () => {
     text: text != "" ? text : "*Post sem texto*",
     categoria: categoria != "" ? categoria : "Não definida",
     imgsList,
+    data,
     carregado: false,
     id
   }
 
-  fakeDb.posts.push(formattedPost);
+  postsDb.posts.push(formattedPost);
 
   const postClear = document.getElementById("post");
   const categoriaClear = document.getElementById("categoria");
