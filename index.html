@@ -18,7 +18,7 @@
             <h1>Mini Rede Social</h1>
         </header>
 
-        <main >
+        <main>
             <form>
                 <div class="inputs mb-3">
                     <label for="post" class="form-label"><i class="bi bi-pencil-fill"></i> Digite seu post:</label>
@@ -29,10 +29,10 @@
                     <label for="categoria" class="form-label"><i class="bi bi-list-ul"></i> Categoria: </label>
                     <select class="form-select" id="categoria">
                         <option selected disabled value="">Todos</option>
-                        <option value="noticias">Notícias</option>
-                        <option value="dicas">Dicas</option>
-                        <option value="eventos">Eventos</option>
-                        <option value="vida">Vida</option>
+                        <option value="Notícias">Notícias</option>
+                        <option value="Dicas">Dicas</option>
+                        <option value="Eventos">Eventos</option>
+                        <option value="Vida">Vida</option>
                     </select>
                 </div>
 
@@ -51,10 +51,13 @@
                     <input type="text" class="form-control" id="img3" placeholder="Insira uma URL aqui"></input>
                 </div>
 
-                <button class="btn btn-secondary" id="publicarBtn">Publicar!</button>
+                <button class="btn btn-secondary" id="publicarBtn" style="font-weight: 600;"><i class="bi bi-megaphone-fill"></i> Publicar!</button>
             </form>
 
-            <div id="postsArea"></div>
+            <div id="postsArea">
+                <h3>Posts:</h3>
+                <div id="posts"></div>
+            </div>
         </main>
 
         <footer>
