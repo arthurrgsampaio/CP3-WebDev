@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="instagram icon" href="./assets/favicon/instagram_icon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./style.css">
+    <title>Mini Rede Social</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <object data="./assets/icons/instagram_logo.svg" style="height: 2.5rem;"></object>
+            <h1>Mini Rede Social</h1>
+        </header>
+
+        <main>
+            <form>
+                <label for="post">
+                    <img src="./assets/icons/pen.svg" alt="pen icon" style="height: 1rem;">
+                    Digite seu post:
+                </label>
+                <input type="text" id="post">
+                
+                <label for="categoria">
+                    <img src="./assets/icons/list.svg" alt="list icon" style="height: 1rem;">
+                    Categorias:
+                </label>
+                <select id="categoria">
+                    <option value="" selected disabled>Todos</option>
+                    <option value="noticias">Notícias</option>
+                    <option value="dicas">Dicas</option>
+                    <option value="eventos">Eventos</option>
+                    <option value="vida">Vida</option>
+                </select>
+                
+                <label for="img1">
+                    <img src="./assets/icons/image.svg" alt="image icon" style="height: 1rem;">
+                    Insira uma imagem (URL):
+                </label>
+                <input type="text" id="img1">
+
+                <label for="img2">
+                    <img src="./assets/icons/image.svg" alt="image icon" style="height: 1rem;">
+                    Insira uma imagem (URL):
+                </label>
+                <input type="text" id="img2">
+                
+                <label for="img3">
+                    <img src="./assets/icons/image.svg" alt="image icon" style="height: 1rem;">
+                    Insira uma imagem (URL):
+                </label>
+                <input type="text" id="img3">
+
+                <button type="submit">
+                    <img src="./assets/icons/megafone.svg" alt="megafone icon" style="height: 1rem;">
+                    Publicar
+                </button>
+            </form>
+        </main>
+
+        <footer>
+            <p>&copy; All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <script src="./index.js"></script>
+</body>
+</html>
